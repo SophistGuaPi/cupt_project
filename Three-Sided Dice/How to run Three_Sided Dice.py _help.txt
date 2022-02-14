@@ -1,2 +1,2 @@
 需要的第三方库:pandas,pybullet,numpy.
-pybullet安装失败可以尝试下载并安装VS的桌面开发组件后安装
+pybullet安装失败可以尝试下载并安装VS的桌面开发组件后再安装pybullet
