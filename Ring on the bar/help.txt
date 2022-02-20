@@ -1,0 +1,2 @@
+该项目使用pybullet模拟实验，
+需要使用的第三方库详见代码，如有安装问题请看three sided dice的help.txt文件
