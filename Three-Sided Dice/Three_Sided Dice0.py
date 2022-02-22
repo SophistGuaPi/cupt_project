@@ -394,7 +394,7 @@ while True:
                          +mass*9.8*pb.getBasePositionAndOrientation(i)[0][2]
     mechanicalEnergy=mechanicalEnergy/objects
     # print(mechanicalEnergy)
-    if (mechanicalEnergy/objects<=minEnergy):
+    if (mechanicalEnerg<=minEnergy):
         for i in range(1,objects+1):
             pos, angle = pb.getBasePositionAndOrientation(i)
             angle = pb.getEulerFromQuaternion(angle)
