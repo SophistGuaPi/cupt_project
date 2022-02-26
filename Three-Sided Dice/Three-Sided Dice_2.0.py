@@ -8,13 +8,14 @@ import math
 import random
 import csv
 import datetime
+import gc
 
 radius=0.133  #圆柱半径
 d=0.1       #圆柱高
 mass=0.1    #圆柱质量
-objects=1000  #一次实验投掷圆柱数量
+objects=100  #一次实验投掷圆柱数量
 nuitTime=1/240 #力学模拟单位时长，多少个单位秒进行一次力学模拟（不用改，这个数值是一点一点试出来的看的最舒服的）
-minEnergy=0.14085499774960774 #停止实验时圆柱平均机械能（每次改变参数需要改，从打印的动能中选取）
+minEnergy=1.4085499774960774*mass #停止实验时圆柱平均机械能（每次改变参数需要改，从打印的动能中选取）
 restitutionAndFriction=[0.5,0.5,0.0005,0.002]#材质的物理属性，摩擦力，弹性等，其中第一个参数为弹力，第二个为横向摩擦力，第三个为转动摩擦力，第四个为滚动摩擦力
 
 
@@ -130,7 +131,7 @@ while 1:
             dlist.append(i*0.01+0.1)
             masslist.append(0.1)
             restitutionAndFrictionlist.append([0.5,0.5,0.0005,0.002])
-            objectslist.append(1000)
+            objectslist.append(objects)
             mode=True
         break
 
@@ -143,6 +144,11 @@ pb.configureDebugVisualizer(pb.COV_ENABLE_TINY_RENDERER,0)
 pb.setRealTimeSimulation(0)
 pb.setTimeStep(nuitTime)
 pb.setAdditionalSearchPath(pybullet_data.getDataPath())
+visual_shape_id = pb.createVisualShape(shapeType=pb.GEOM_MESH, fileName="Three-Sided Dice.obj",
+                                       rgbaColor=[1, 1, 1, 1], specularColor=[0.4, 0.4, 0],
+                                       visualFramePosition=shift, meshScale=scale)
+collision_shape_id = pb.createCollisionShape(shapeType=pb.GEOM_CYLINDER, fileName="Three-Sided Dice.obj",
+                                             collisionFramePosition=shift, meshScale=scale)
 
 while 1:
     #链接物理引擎
@@ -152,9 +158,7 @@ while 1:
         mass=masslist[num]
         restitutionAndFriction=restitutionAndFrictionlist[num]
         objects=objectslist[num]
-        if os.path.exists("E:\project\cupt\model\Three-Sided Dice.obj"):
-            os.remove("E:\project\cupt\model\Three-Sided Dice.obj")
-        create(radius, d, 100)
+
     pb.configureDebugVisualizer(pb.COV_ENABLE_RENDERING, 0)
     pb.resetSimulation()
     pb.setGravity(0,0,-9.8)
@@ -163,10 +167,10 @@ while 1:
     pb.changeDynamics(0, -1, restitution=restitutionAndFriction[0], lateralFriction=restitutionAndFriction[1],
                       spinningFriction=restitutionAndFriction[2], rollingFriction=restitutionAndFriction[3])
     pb.resetDebugVisualizerCamera(cameraDistance=8, cameraYaw=110, cameraPitch=-30, cameraTargetPosition=[0, 0, 0])
-    visual_shape_id = pb.createVisualShape(shapeType=pb.GEOM_MESH, fileName="Three-Sided Dice.obj",
+    visual_shape_id = pb.createVisualShape(shapeType=pb.GEOM_CYLINDER, length=d,radius=radius,
                                            rgbaColor=[1, 1, 1, 1], specularColor=[0.4, 0.4, 0],
                                            visualFramePosition=shift, meshScale=scale)
-    collision_shape_id = pb.createCollisionShape(shapeType=pb.GEOM_MESH, fileName="Three-Sided Dice.obj",
+    collision_shape_id = pb.createCollisionShape(shapeType=pb.GEOM_CYLINDER, height=d,radius=radius,
                                                  collisionFramePosition=shift, meshScale=scale)
 
     #在物理引擎中添加圆柱模型
@@ -263,7 +267,6 @@ while 1:
                     df.loc[i]["rollingFriction"] = restitutionAndFriction[3]
                 break
             else:
-                print(df)
                 df.loc[num+1]["radius"] = radius
                 df.loc[num+1]["thickness"] = d
                 df.loc[num+1]["mass"] = mass
@@ -275,8 +278,8 @@ while 1:
                 df.loc[num+1]["upSideSurface amount"] = UpSide
                 df.loc[num+1]["downSideSurface amount"] = DownSide
                 df.loc[num+1]["sideSurface amount"] = SideSurface
-                print(num)
                 print(f"-----第{num + 1}组实验结束-----\n")
+                print(df)
                 num += 1
                 SideSurface, UpSide, DownSide = 0, 0, 0
                 break
