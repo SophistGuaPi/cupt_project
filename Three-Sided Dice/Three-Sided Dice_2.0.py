@@ -8,7 +8,6 @@ import math
 import random
 import csv
 import datetime
-import gc
 
 radius=0.133  #圆柱半径
 d=0.1       #圆柱高
