@@ -152,6 +152,9 @@ while 1:
         mass=masslist[num]
         restitutionAndFriction=restitutionAndFrictionlist[num]
         objects=objectslist[num]
+        if os.path.exists("E:\project\cupt\model\Three-Sided Dice.obj"):
+            os.remove("E:\project\cupt\model\Three-Sided Dice.obj")
+        create(radius, d, 100)
     pb.configureDebugVisualizer(pb.COV_ENABLE_RENDERING, 0)
     pb.resetSimulation()
     pb.setGravity(0,0,-9.8)
