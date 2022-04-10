@@ -21,7 +21,7 @@ restitutionAndFriction=[0.5,0.5,0.0005,0.002]#材质的物理属性，摩擦力�
 #生成Three-Sided Dice.obj模型文件以进行模拟实验
 def create (r,d,n):  #三个参数分别为半径，高和模拟圆的多边形边的数量
     str1,str2=[],[]
-    f=open("E:\project\cupt\model\Three-Sided Dice.txt","a")
+    f=open("Three-Sided Dice.txt","a")
     for i in range(n):
         angle=(2*math.pi/n)*i
         string="v "+str(round(r*math.cos(angle),6))+" "+str(round(r*math.sin(angle),6))+" "+str(d/2)+"\n"
@@ -45,8 +45,7 @@ def create (r,d,n):  #三个参数分别为半径，高和模拟圆的多边形�
         str2.append(" "+str(2*n-i))
     f.write("f"+"".join(str1)+"\n"+"# UpSideSurface"+"\n"+"f"+"".join(str2)+"\n"+"# DownSideSurface"+"\n")
     f.close()
-    list=os.listdir("E:\project\cupt\model")
-    os.chdir("E:\project\cupt\model")
+    list=os.listdir()
     for i in list:
         if i[-4:]==".txt":
             os.rename(i,i.replace(".txt",".obj"))
@@ -107,10 +106,10 @@ restitutionAndFrictionlist=[]
 objectslist=[]
 
 #ps:记住这个路径，统计结果也会放在这个路径下。
-if os.path.exists("E:\project\cupt\model\Three-Sided Dice.txt"):
-    os.remove("E:\project\cupt\model\Three-Sided Dice.txt")
-if os.path.exists("E:\project\cupt\model\Three-Sided Dice.obj"):
-    os.remove("E:\project\cupt\model\Three-Sided Dice.obj")
+if os.path.exists("Three-Sided Dice.txt"):
+    os.remove("Three-Sided Dice.txt")
+if os.path.exists("Three-Sided Dice.obj"):
+    os.remove("Three-Sided Dice.obj")
 create(radius,d,100)#(float(input("请输入半径r\n")),float(input("请输入厚度d\n")),int(input("请输入近似圆弧多边形边的数量n\n")))
 #生成Three-Sided Dice.obj
 
@@ -134,7 +133,7 @@ while 1:
             mode=True
         break
 
-#生成圆柱模型，并存入路径（需修改路径方能运行）
+#生成圆柱模型，并存入路径
 phy=pb.connect(pb.GUI)
 print(pybullet_data.getDataPath())
 pb.configureDebugVisualizer(pb.COV_ENABLE_RENDERING,0)
