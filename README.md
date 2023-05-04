@@ -1,4 +1,4 @@
-# usst_cupt_project
+# cupt_project
 OK...
 This is a try to use GitHub.
 All file I have used in the project will upload here.
